@@ -78,9 +78,9 @@ No more `patch-package`, and no compromises except for having to ensure that any
 
 ## Usage
 
-### Versioning
+If you'd normally have installed, say, `@types/react@16.9.49`, then install the equivalent version of `types-react-without-jsx-intrinsics` instead, by following the below instructions. I only support a handful of versions and don't have the motivation to set up automation to handle all possible versions, so please just pick the closest version to the one you need.
 
-The version number of the package exactly mirrors that of the corresponding `@types/react` package. Hopefully I don't 
+The version number of the package *should* exactly mirror that of the corresponding `@types/react` package. If we ever make any mistakes in publishing, the best we can do is increment the patch version and make a note of warning here.
 
 ### Installing from npm
 
@@ -112,14 +112,17 @@ npm install --save-dev ./types-react-without-jsx-intrinsics/16.9.49
 
 ### Adding another version of `@types/react`
 
-- first, install the desired version of `@types/react` into some temporary project;
-- copy the files out of the temporary project's `node_modules/@types/react` folder into the `packages` directory in this repo;
-- rename the copied directory to reflect the package's version number;
-- edit the package's `package.json`:
+- First, install the desired version of `@types/react` into some temporary project.
+- Copy the files out of the temporary project's `node_modules/@types/react` folder into the `packages` directory in this repo.
+- Rename the copied directory to reflect the package's version number.
+- Edit the package's `package.json`:
   - `name`: `"types-react-without-jsx-intrinsics"`
   - `repository.url`: `"https://github.com/shirakaba/types-react-without-jsx-intrinsics.git"`
   - `repository.directory`: `"packages/16.9.49"` (replace the version number with that of the package in question),
-- edit the package's `index.d.ts` file such that the interface `IntrinsicElements` is empty.
+  I personally don't bother editing the `contributors` section as it's just more editing to do and I get attribution through the repository URL anyway.
+- Edit the package's `index.d.ts` file such that the interface `JSX.IntrinsicElements` is empty. Again, I personally don't edit the contributors list in the comments.
+
+Now it's ready to be published.
 
 ### Publishing the packages
 
