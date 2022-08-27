@@ -87,14 +87,15 @@ The version number of the package *should* exactly mirror that of the correspond
 You can run this CLI command:
 
 ```sh
-npm install --save-dev npm:types-react-without-jsx-intrinsics@16.9.49
+# You can add the --save-exact flag if you want exactly 16.9.49 rather than ^16.9.49
+npm install --save-dev @types/react@npm:types-react-without-jsx-intrinsics@16.9.49
 ```
 
 ... or equally write this field into your `package.json` and run `npm install`:
 
 ```json
 "devDependencies": {
-    "@types/react": "npm:types-react-without-jsx-intrinsics@16.9.49"
+    "@types/react": "npm:types-react-without-jsx-intrinsics@^16.9.49"
 }
 ```
 
