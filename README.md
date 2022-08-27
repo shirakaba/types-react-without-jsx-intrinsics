@@ -84,9 +84,13 @@ The version number of the package *should* exactly mirror that of the correspond
 
 ### Installing from npm
 
+You can run this CLI command:
+
 ```sh
 npm install --save-dev npm:types-react-without-jsx-intrinsics@16.9.49
 ```
+
+... or equally write this field into your `package.json` and run `npm install`:
 
 ```json
 "devDependencies": {
@@ -96,11 +100,15 @@ npm install --save-dev npm:types-react-without-jsx-intrinsics@16.9.49
 
 ### Installing from disk (for dev purposes)
 
+You can run this CLI command:
+
 ```sh
 # Assuming the types-react-without-jsx-intrinsics repo is in the same directory
 # as your package.json:
 npm install --save-dev ./types-react-without-jsx-intrinsics/16.9.49
 ```
+
+... or equally write this field into your `package.json` and run `npm install`:
 
 ```json
 "devDependencies": {
