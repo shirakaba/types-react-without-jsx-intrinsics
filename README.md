@@ -62,7 +62,7 @@ export const HelloWorld = () => {
 
 So it would be attractive, when building a React custom renderer, if we could base our library on intrinsic elements just like React DOM does.
 
-## The problem
+### The problem
 
 `@types/react` is polluted with typings for React DOM. I have been complaining about this wherever I can for years. The consequence of this is that anyone writing a custom renderer will find that their IntelliSense suggests that all the HTML elements are available at intrinsic elements. You can define the intrinsic elements your library supports by writing to the same interface (`JSX.IntrinsicElements`), but you can only add, not remove - this means that the moment you have a name-clash with a HTML element (most UI libraries will name-clash upon generic names like `<button>`, `<label>`, `<image>`), the TypeScript compiler will start screaming.
 
@@ -70,13 +70,17 @@ Up until now, I've been working around this using `patch-package`, but it's horr
 
 Now, there are some options with TypeScript's newer `jsxFactory` option (and indeed, both Svelte Native and Svelte NodeGUI make use of it), but they pass on a burden of extra typing onto the user - they'll often need to import both React itself, for things like `useState()`, and your JSX factory (for the implicit `createElement()` powering the JSX) in every file with UI code. I just want the same first-class treatment that React DOM gets.
 
-## The solution
+### The solution
 
 My hand has been forced. The most user-friendly option I could think up was to republish patched versions of `@types/react` with the `JSX.IntrinsicElements` interface emptied. Users can then install those typings in place of `@types/react` via the relatively new npm [package aliasing](https://github.com/npm/rfcs/blob/main/implemented/0001-package-aliases.md) feature (or any of a number of tsconfig tricks for referencing types).
 
 No more `patch-package`, and no compromises except for having to ensure that any starter templates for your projects have that npm aliasing in place.
 
-## Example usage
+## Usage
+
+### Versioning
+
+The version number of the package exactly mirrors that of the corresponding `@types/react` package. Hopefully I don't 
 
 ### Installing from npm
 
@@ -86,22 +90,42 @@ npm install --save-dev npm:types-react-without-jsx-intrinsics@16.9.49
 
 ```json
 "devDependencies": {
-    "@types/react": "npm:types-react-without-jsx-intrinsics@16.9.49",
+    "@types/react": "npm:types-react-without-jsx-intrinsics@16.9.49"
 }
 ```
 
 ### Installing from disk (for dev purposes)
 
 ```sh
-# Place the types-react-without-jsx-intrinsics repo alongside your package.json
+# Assuming the types-react-without-jsx-intrinsics repo is in the same directory
+# as your package.json:
 npm install --save-dev ./types-react-without-jsx-intrinsics/16.9.49
 ```
 
 ```json
 "devDependencies": {
-    "@types/react": "file:types-react-without-jsx-intrinsics/16.9.49",
+    "@types/react": "file:types-react-without-jsx-intrinsics/16.9.49"
 }
 ```
+
+## Contributing
+
+### Adding another version of `@types/react`
+
+- first, install the desired version of `@types/react` into some temporary project;
+- copy the files out of the temporary project's `node_modules/@types/react` folder into the `packages` directory in this repo;
+- rename the copied directory to reflect the package's version number;
+- edit the package's `package.json`:
+  - `name`: `"types-react-without-jsx-intrinsics"`
+  - `repository.url`: `"https://github.com/shirakaba/types-react-without-jsx-intrinsics.git"`
+  - `repository.directory`: `"packages/16.9.49"` (replace the version number with that of the package in question),
+- edit the package's `index.d.ts` file such that the interface `IntrinsicElements` is empty.
+
+### Publishing the packages
+
+There's no magic tooling; this is a completely manual process. We just change directory to that of the package of interest, then run `npm publish`.
+
+Of course you'll need permissions to publish the package; get in contact if interested!
 
 ## Troubleshooting
 
