@@ -64,7 +64,7 @@ So it would be attractive, when building a React custom renderer, if we could ba
 
 ### The problem
 
-`@types/react` is polluted with typings for React DOM. I have been complaining about this wherever I can for years, and I'm [not the only one](https://blog.pshrmn.com/trouble-with-react-types/). The consequence of this is that anyone writing a custom renderer will find that their IntelliSense suggests that all the HTML elements are available at intrinsic elements. You can define the intrinsic elements your library supports by writing to the same interface (`JSX.IntrinsicElements`), but you can only add, not remove - this means that the moment you have a name-clash with a HTML element (most UI libraries will name-clash upon generic names like `<button>`, `<label>`, `<image>`), the TypeScript compiler will start screaming.
+`@types/react` is polluted with typings for React DOM. I have been complaining about this wherever I can for years, and I'm [not the only one](https://blog.pshrmn.com/trouble-with-react-types/). The consequence of this is that anyone writing a custom renderer will find that their IntelliSense suggests that all the HTML elements are available as intrinsic elements. You can define the intrinsic elements your library supports by writing to the same interface (`JSX.IntrinsicElements`), but you can only add, not remove - this means that the moment you have a name-clash with a HTML element (most UI libraries will name-clash upon generic names like `<button>`, `<label>`, `<image>`), the TypeScript compiler will start screaming.
 
 Up until now, I've been working around this using `patch-package`, but it's horrible to manage and generally necessitates restarting the TypeScript language server.
 
