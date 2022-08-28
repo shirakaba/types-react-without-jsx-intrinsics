@@ -1,6 +1,6 @@
 # types-react-without-jsx-intrinsics
 
-`@types/react`, with an empty `JSX.IntrinsicElements` interface, for custom React renderers not based on DOM.
+`@types/react`, with an empty `JSX.IntrinsicElements` interface, for custom React renderers not based on HTML.
 
 ## Background
 
@@ -64,7 +64,7 @@ So it would be attractive, when building a React custom renderer, if we could ba
 
 ### The problem
 
-`@types/react` is polluted with typings for React DOM. I have been complaining about this wherever I can for years. The consequence of this is that anyone writing a custom renderer will find that their IntelliSense suggests that all the HTML elements are available at intrinsic elements. You can define the intrinsic elements your library supports by writing to the same interface (`JSX.IntrinsicElements`), but you can only add, not remove - this means that the moment you have a name-clash with a HTML element (most UI libraries will name-clash upon generic names like `<button>`, `<label>`, `<image>`), the TypeScript compiler will start screaming.
+`@types/react` is polluted with typings for React DOM. I have been complaining about this wherever I can for years, and I'm [not the only one](https://blog.pshrmn.com/trouble-with-react-types/). The consequence of this is that anyone writing a custom renderer will find that their IntelliSense suggests that all the HTML elements are available at intrinsic elements. You can define the intrinsic elements your library supports by writing to the same interface (`JSX.IntrinsicElements`), but you can only add, not remove - this means that the moment you have a name-clash with a HTML element (most UI libraries will name-clash upon generic names like `<button>`, `<label>`, `<image>`), the TypeScript compiler will start screaming.
 
 Up until now, I've been working around this using `patch-package`, but it's horrible to manage and generally necessitates restarting the TypeScript language server.
 
@@ -121,6 +121,8 @@ npm install --save-dev ./types-react-without-jsx-intrinsics/16.9.49
 
 ### Adding another version of `@types/react`
 
+It's a totally manual process. Clearly it could be automated, but I think the effort payoff isn't sufficient given the decent stability of the typings and the slow release cadence of major versions of React.
+
 - First, install the desired version of `@types/react` into some temporary project.
 - Copy the files out of the temporary project's `node_modules/@types/react` folder into the `packages` directory in this repo.
 - Rename the copied directory to reflect the package's version number.
@@ -135,9 +137,13 @@ Now it's ready to be published.
 
 ### Publishing the packages
 
-There's no magic tooling; this is a completely manual process. We just change directory to that of the package of interest, then run `npm publish`.
+There's no magic monorepo tooling or anything; again, it's a completely manual process. We just change directory to that of the package of interest, then run `npm publish`.
 
 Of course you'll need permissions to publish the package; get in contact if interested!
+
+## Licensing
+
+I'm distributing these packages under the exact same MIT licence as they began with, which is included in each package. No need to attribute me (all I did was remove a few lines); let's keep this simple.
 
 ## Troubleshooting
 
